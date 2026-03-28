@@ -7,9 +7,24 @@ import { signOut } from "@/auth";
 
 export default async function PublicacionesPage() {
   const session = await auth();
-  const papers = await prisma.paper.findMany({
-    orderBy: { uploadedAt: "desc" },
-  });
+  let papers: {
+    id: string;
+    title: string;
+    authors: string;
+    summary: string | null;
+    storagePath: string;
+    uploadedAt: Date;
+  }[] = [];
+  let dbUnavailable = false;
+
+  try {
+    papers = await prisma.paper.findMany({
+      orderBy: { uploadedAt: "desc" },
+    });
+  } catch (error) {
+    dbUnavailable = true;
+    console.error("Error loading papers:", error);
+  }
 
   return (
     <main className="hero-grid section-page">
@@ -37,6 +52,18 @@ export default async function PublicacionesPage() {
           Contribuye al conocimiento subiendo nuevas evidencias.
         </p>
       </section>
+
+      {dbUnavailable && (
+        <section className="upload-panel stagger delay-1" aria-label="Estado base de datos">
+          <div className="panel-head">
+            <h2>Repositorio no disponible temporalmente</h2>
+            <p>
+              No se pudo conectar con la base de datos en este momento. Revisa la variable
+              DATABASE_URL en Vercel y vuelve a desplegar.
+            </p>
+          </div>
+        </section>
+      )}
 
       {session?.user && (
         <section className="upload-panel stagger delay-1" aria-label="Subida de papers">
