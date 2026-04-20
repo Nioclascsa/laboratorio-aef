@@ -1,21 +1,50 @@
-import { SectionPage } from "../components/section-page";
 import { UploadForm } from "../components/upload-form";
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
 import { auth } from "@/auth";
 import { signOut } from "@/auth";
 
-export default async function PublicacionesPage() {
+type SearchParams = {
+  q?: string | string[];
+  author?: string | string[];
+  journal?: string | string[];
+  year?: string | string[];
+};
+
+type PageProps = {
+  searchParams?: SearchParams;
+};
+
+function getSingleParam(value: string | string[] | undefined) {
+  if (typeof value === "string") {
+    return value.trim();
+  }
+
+  if (Array.isArray(value) && value.length > 0) {
+    return value[0]?.trim() ?? "";
+  }
+
+  return "";
+}
+
+export default async function PublicacionesPage({ searchParams }: PageProps) {
   const session = await auth();
   let papers: {
     id: string;
     title: string;
     authors: string;
+    journal: string | null;
+    publicationDate: Date | null;
     summary: string | null;
     storagePath: string;
     uploadedAt: Date;
   }[] = [];
   let dbUnavailable = false;
+
+  const query = getSingleParam(searchParams?.q);
+  const selectedAuthor = getSingleParam(searchParams?.author);
+  const selectedJournal = getSingleParam(searchParams?.journal);
+  const selectedYear = getSingleParam(searchParams?.year);
 
   try {
     papers = await prisma.paper.findMany({
@@ -25,6 +54,58 @@ export default async function PublicacionesPage() {
     dbUnavailable = true;
     console.error("Error loading papers:", error);
   }
+
+  const authorSet = new Set<string>();
+  const journalSet = new Set<string>();
+  const yearSet = new Set<string>();
+
+  papers.forEach((paper) => {
+    const authors = paper.authors
+      .split(",")
+      .map((author) => author.trim())
+      .filter(Boolean);
+    authors.forEach((author) => authorSet.add(author));
+
+    if (paper.journal) {
+      journalSet.add(paper.journal);
+    }
+
+    const date = paper.publicationDate ?? paper.uploadedAt;
+    yearSet.add(date.getFullYear().toString());
+  });
+
+  const authorOptions = Array.from(authorSet).sort((a, b) => a.localeCompare(b));
+  const journalOptions = Array.from(journalSet).sort((a, b) => a.localeCompare(b));
+  const yearOptions = Array.from(yearSet).sort((a, b) => Number(b) - Number(a));
+
+  const normalizedQuery = query.toLowerCase();
+  const normalizedAuthor = selectedAuthor.toLowerCase();
+  const normalizedJournal = selectedJournal.toLowerCase();
+
+  const filteredPapers = papers.filter((paper) => {
+    const publicationDate = paper.publicationDate ?? paper.uploadedAt;
+    const publicationYear = publicationDate.getFullYear().toString();
+    const authorList = paper.authors
+      .split(",")
+      .map((author) => author.trim())
+      .filter(Boolean);
+
+    const matchesAuthor = !normalizedAuthor
+      ? true
+      : authorList.some((author) => author.toLowerCase() === normalizedAuthor);
+    const matchesJournal = !normalizedJournal
+      ? true
+      : (paper.journal ?? "").toLowerCase() === normalizedJournal;
+    const matchesYear = !selectedYear || publicationYear === selectedYear;
+    const matchesQuery = !normalizedQuery
+      ? true
+      : [paper.title, paper.authors, paper.journal ?? "", paper.summary ?? ""]
+          .join(" ")
+          .toLowerCase()
+          .includes(normalizedQuery);
+
+    return matchesAuthor && matchesJournal && matchesYear && matchesQuery;
+  });
 
   return (
     <main className="hero-grid section-page">
@@ -75,43 +156,116 @@ export default async function PublicacionesPage() {
         </section>
       )}
 
-      {papers.length > 0 && (
-        <section className="papers-list stagger delay-2" aria-label="Lista de papers">
+      <section className="publications-layout stagger delay-2" aria-label="Repositorio digital">
+        <aside className="publications-filters">
+          <h2>Filtrar</h2>
+          <form method="get" className="filters-form">
+            <div className="filter-field">
+              <label htmlFor="q">Busqueda</label>
+              <input
+                id="q"
+                name="q"
+                type="search"
+                placeholder="Titulo, autores o revista"
+                defaultValue={query}
+              />
+            </div>
+            <div className="filter-field">
+              <label htmlFor="author">Autores</label>
+              <select id="author" name="author" defaultValue={selectedAuthor}>
+                <option value="">Todos los autores</option>
+                {authorOptions.map((author) => (
+                  <option key={author} value={author}>
+                    {author}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="filter-field">
+              <label htmlFor="journal">Revistas</label>
+              <select id="journal" name="journal" defaultValue={selectedJournal}>
+                <option value="">Todas las revistas</option>
+                {journalOptions.map((journal) => (
+                  <option key={journal} value={journal}>
+                    {journal}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="filter-field">
+              <label htmlFor="year">Año</label>
+              <select id="year" name="year" defaultValue={selectedYear}>
+                <option value="">Todos los años</option>
+                {yearOptions.map((year) => (
+                  <option key={year} value={year}>
+                    {year}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <button type="submit" className="filter-button">
+              Buscar
+            </button>
+          </form>
+        </aside>
+
+        <div className="publications-results">
           <div className="panel-head">
             <h2>Repositorio Digital</h2>
+            <p>{filteredPapers.length} resultados</p>
           </div>
-          <ul className="paper-grid">
-            {papers.map((paper) => (
-              <li key={paper.id} className="paper-item">
-                <Link href={paper.storagePath} target="_blank" className="paper-link">
-                  <div className="paper-info">
-                    <h4>{paper.title}</h4>
-                    <p className="paper-meta">
-                      {paper.authors} • {new Date(paper.uploadedAt).toLocaleDateString()}
-                    </p>
-                    {paper.summary && <p className="paper-summary">{paper.summary}</p>}
-                  </div>
-                  <span className="download-icon">↓ PDF</span>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
 
-      <section className="cards stagger delay-2" aria-label="Categorias">
-        <article className="card">
-          <h3>Articulos Cientificos</h3>
-          <p>Publicaciones indexadas y papers de revision revisados por pares.</p>
-        </article>
-        <article className="card">
-          <h3>Tesis y Memorias</h3>
-          <p>Trabajos de titulacion de pregrado y postgrado del laboratorio.</p>
-        </article>
-        <article className="card">
-          <h3>Informes Tecnicos</h3>
-          <p>Reportes de proyectos, asesorias y levantamientos de linea base.</p>
-        </article>
+          {filteredPapers.length === 0 ? (
+            <div className="empty-results">
+              <h3>No se encontraron publicaciones</h3>
+              <p>Intenta ajustar los filtros o la busqueda.</p>
+            </div>
+          ) : (
+            <ul className="publications-list">
+              {filteredPapers.map((paper) => {
+                const publicationDate = paper.publicationDate ?? paper.uploadedAt;
+                const publicationYear = publicationDate.getFullYear();
+
+                return (
+                  <li key={paper.id} className="publication-item">
+                    <div className="publication-card">
+                      <div className="publication-main">
+                        <h3 className="publication-title">{paper.title}</h3>
+                        <dl className="publication-meta">
+                          <div>
+                            <dt>Autores</dt>
+                            <dd>{paper.authors}</dd>
+                          </div>
+                          <div>
+                            <dt>Revista</dt>
+                            <dd>{paper.journal ?? "Sin especificar"}</dd>
+                          </div>
+                          <div>
+                            <dt>Año</dt>
+                            <dd>{publicationYear}</dd>
+                          </div>
+                        </dl>
+                        {paper.summary && (
+                          <p className="publication-summary">{paper.summary}</p>
+                        )}
+                      </div>
+                      <div className="publication-actions">
+                        <span className="publication-year">{publicationYear}</span>
+                        <Link
+                          href={paper.storagePath}
+                          target="_blank"
+                          className="publication-download"
+                        >
+                          Descargar articulo
+                        </Link>
+                      </div>
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
+        </div>
       </section>
     </main>
   );

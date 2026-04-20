@@ -21,12 +21,23 @@ export async function POST(request: Request) {
 
   const title = String(formData.get("title") || "").trim();
   const authors = String(formData.get("authors") || "").trim();
+  const journal = String(formData.get("journal") || "").trim();
+  const publicationDateValue = String(formData.get("publicationDate") || "").trim();
   const summary = String(formData.get("summary") || "").trim();
   const file = formData.get("paper");
 
-  if (!title || !authors) {
+  if (!title || !authors || !journal || !publicationDateValue) {
     return NextResponse.json(
-      { error: "Titulo y autores son obligatorios." },
+      { error: "Titulo, autores, revista y fecha de publicacion son obligatorios." },
+      { status: 400 },
+    );
+  }
+
+  const publicationDate = new Date(publicationDateValue);
+
+  if (Number.isNaN(publicationDate.getTime())) {
+    return NextResponse.json(
+      { error: "La fecha de publicacion no es valida." },
       { status: 400 },
     );
   }
@@ -90,6 +101,8 @@ export async function POST(request: Request) {
       id,
       title,
       authors,
+      journal,
+      publicationDate,
       summary: summary || null,
       originalName: file.name,
       storagePath: publicUrl,

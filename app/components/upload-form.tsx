@@ -6,6 +6,8 @@ type UploadResponse = {
   id: string;
   title: string;
   authors: string;
+  journal: string;
+  publicationDate: string;
   originalName: string;
   size: number;
   uploadedAt: string;
@@ -65,6 +67,16 @@ export function UploadForm() {
       <div>
         <label htmlFor="authors">Autores</label>
         <input id="authors" name="authors" placeholder="Ej. Perez, Gomez, Ruiz" required />
+      </div>
+
+      <div>
+        <label htmlFor="journal">Revista</label>
+        <input id="journal" name="journal" placeholder="Ej. Journal of Soil Science" required />
+      </div>
+
+      <div>
+        <label htmlFor="publicationDate">Fecha de publicacion</label>
+        <input id="publicationDate" name="publicationDate" type="date" required />
       </div>
 
       <div>
