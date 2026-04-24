@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 
 const menu = [
@@ -19,9 +20,19 @@ export function SiteHeader() {
   return (
     <header className="site-header">
       <div className="site-header-inner">
-        <Link href="/" className="brand-mark">
-          LabBio
-        </Link>
+        <div className="brand-mark">
+          <Link href="/" className="brand-logo-link" aria-label="Ir al inicio">
+            <Image
+              src="/logo-aef.png"
+              alt="Logo Laboratorio AEF"
+              width={44}
+              height={44}
+              className="brand-logo"
+              priority
+            />
+          </Link>
+          <span className="brand-text">Laboratorio AEF</span>
+        </div>
 
         <nav aria-label="Principal" className="site-nav">
           {menu.map((item) => {
