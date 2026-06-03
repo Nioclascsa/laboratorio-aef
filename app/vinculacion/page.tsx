@@ -3,21 +3,17 @@ import { SectionPage } from "../components/section-page";
 export default function VinculacionPage() {
   return (
     <SectionPage
-      eyebrow="Colaboracion"
+      eyebrow="En construccion"
       title="Vinculacion"
-      description="Articulamos trabajo con instituciones publicas, centros de salud, industria y comunidades para transferir conocimiento biologico."
+      description="Esta seccion esta en preparacion. Pronto compartiremos colaboraciones y proyectos."
       blocks={[
         {
-          title: "Convenios",
-          text: "Mantenemos alianzas para co-ejecutar proyectos y compartir capacidades tecnicas.",
+          title: "En desarrollo",
+          text: "Estamos preparando el contenido para publicarlo.",
         },
         {
-          title: "Extension",
-          text: "Impulsamos actividades de divulgacion cientifica para escolares y organizaciones locales.",
-        },
-        {
-          title: "Servicios",
-          text: "Ofrecemos apoyo analitico y asesorias en procesos biologicos de interes aplicado.",
+          title: "Contacto",
+          text: "Si necesitas informacion, escribe a contacto@labbio.cl.",
         },
       ]}
     />

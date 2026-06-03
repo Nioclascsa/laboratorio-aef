@@ -1,13 +1,25 @@
 import type { NextConfig } from "next";
 
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseHostname = supabaseUrl ? new URL(supabaseUrl).hostname : null;
+
+const remotePatterns: NextConfig["images"] extends { remotePatterns: infer T } ? T : never = [
+  {
+    protocol: "https",
+    hostname: "images.unsplash.com",
+  },
+];
+
+if (supabaseHostname) {
+  remotePatterns.push({
+    protocol: "https",
+    hostname: supabaseHostname,
+  });
+}
+
 const nextConfig: NextConfig = {
   images: {
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "images.unsplash.com",
-      },
-    ],
+    remotePatterns,
   },
 };
 

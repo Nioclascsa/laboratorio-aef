@@ -1,4 +1,8 @@
+import Link from "next/link";
+
 import { HeroCarousel } from "./components/hero-carousel";
+import { InstagramEmbeds } from "./components/instagram-embeds";
+import { prisma } from "@/lib/prisma";
 
 const researchPrograms = [
   {
@@ -34,22 +38,48 @@ const integrativePrograms = [
   },
 ];
 
-const newsItems = [
-  {
-    date: "Marzo 2026",
-    title: "Equipo del laboratorio presenta informe sobre calidad biologica de humedales urbanos",
-  },
-  {
-    date: "Febrero 2026",
-    title: "Nueva convocatoria para tesistas en microbiologia ambiental y analisis de metagenomas",
-  },
-  {
-    date: "Enero 2026",
-    title: "Publicamos protocolo abierto para monitoreo de biodiversidad en agroecosistemas",
-  },
+type NewsPreview = {
+  id: string;
+  title: string;
+  publishedAt: Date;
+  imageUrl: string | null;
+};
+
+function formatDate(value: Date) {
+  return new Intl.DateTimeFormat("es-CL", {
+    day: "2-digit",
+    month: "long",
+    year: "numeric",
+  }).format(value);
+}
+
+// Reemplaza estos enlaces con publicaciones reales del Instagram del laboratorio
+const instagramPosts = [
+  "https://www.instagram.com/p/DVosclokYaj/",
+  "https://www.instagram.com/p/DYr-ZW1ERAE/",
+  "https://www.instagram.com/p/REEMPLAZA_3/",
 ];
 
-export default function Home() {
+export default async function Home() {
+  let newsItems: NewsPreview[] = [];
+  let newsUnavailable = false;
+
+  try {
+    newsItems = await prisma.news.findMany({
+      orderBy: { publishedAt: "desc" },
+      take: 3,
+      select: {
+        id: true,
+        title: true,
+        publishedAt: true,
+        imageUrl: true,
+      },
+    });
+  } catch (error) {
+    newsUnavailable = true;
+    console.error("Error loading home news:", error);
+  }
+
   return (
     <main className="hero-grid home-ie-style">
       <section className="hero hero-institutional stagger">
@@ -63,31 +93,7 @@ export default function Home() {
 
       <HeroCarousel />
 
-      <section className="search-strip stagger delay-1">
-        <div className="search-container">
-          <input
-            type="text"
-            placeholder="Buscar papers, autores o temas de investigacion..."
-            className="search-input"
-          />
-          <button type="button" className="search-button">
-            Buscar
-          </button>
-        </div>
-      </section>
-
-      <section className="search-strip stagger delay-1">
-        <div className="search-container">
-          <input
-            type="text"
-            placeholder="Buscar papers, autores o temas de investigacion..."
-            className="search-input"
-          />
-          <button type="button" className="search-button">
-            Buscar
-          </button>
-        </div>
-      </section>
+     
 
       <section className="intro-strip stagger delay-1" aria-label="Mensaje introductorio">
         <h2>Ven a explorar la biodiversidad con nosotros</h2>
@@ -132,15 +138,56 @@ export default function Home() {
           <h2>Noticias</h2>
           <p>Actualidad del laboratorio, convocatorias y publicaciones recientes.</p>
         </div>
-        <div className="news-list">
-          {newsItems.map((item) => (
-            <article className="news-item" key={item.title}>
-              <span>{item.date}</span>
-              <h3>{item.title}</h3>
-              <a href="/noticias">Ver mas</a>
-            </article>
-          ))}
+        {newsUnavailable ? (
+          <div className="news-empty">
+            <h3>Noticias no disponibles</h3>
+            <p>No se pudo conectar con la base de datos. Intentalo mas tarde.</p>
+          </div>
+        ) : null}
+
+        {!newsUnavailable && newsItems.length === 0 ? (
+          <div className="news-empty">
+            <h3>Sin noticias por ahora</h3>
+            <p>Pronto compartiremos novedades del laboratorio.</p>
+          </div>
+        ) : null}
+
+        {!newsUnavailable && newsItems.length > 0 ? (
+          <div className="news-list">
+            {newsItems.map((item) => (
+              <article className="news-item news-item--media" key={item.id}>
+                <div className={`news-thumb ${item.imageUrl ? "" : "news-thumb--empty"}`}>
+                  {item.imageUrl ? (
+                    <img src={item.imageUrl} alt={`Imagen de ${item.title}`} loading="lazy" />
+                  ) : (
+                    <span className="news-thumb-fallback">Sin imagen</span>
+                  )}
+                </div>
+                <div className="news-item-body">
+                  <span>{formatDate(item.publishedAt)}</span>
+                  <h3>{item.title}</h3>
+                  <Link href={`/noticias/${item.id}`}>Ver mas</Link>
+                </div>
+              </article>
+            ))}
+          </div>
+        ) : null}
+      </section>
+
+      <section className="stacked-panel stagger delay-2" aria-label="Instagram del laboratorio">
+        <div className="panel-head">
+          <h2>Instagram</h2>
+          <p>Publicaciones recientes de @aefpucv.</p>
         </div>
+
+        {instagramPosts.length === 0 ? (
+          <div className="instagram-empty">
+            <h3>Agrega enlaces de Instagram</h3>
+            <p>Actualiza la lista en app/page.tsx para mostrar publicaciones.</p>
+          </div>
+        ) : (
+          <InstagramEmbeds posts={instagramPosts} />
+        )}
       </section>
 
       <section className="links-band stagger delay-2" aria-label="Enlaces e informacion institucional">
@@ -169,6 +216,7 @@ export default function Home() {
           </ul>
         </div>
       </section>
+
     </main>
   );
 }

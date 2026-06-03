@@ -1,7 +1,9 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
+import { NewsDeleteButton } from "@/app/components/news-delete-button";
 
 type PageProps = {
   params: Promise<{
@@ -19,6 +21,8 @@ function formatDate(value: Date) {
 
 export default async function NoticiaDetallePage({ params }: PageProps) {
   const { id } = await params;
+  const session = await auth();
+  let isAdmin = false;
   let news:
     | {
         id: string;
@@ -31,6 +35,15 @@ export default async function NoticiaDetallePage({ params }: PageProps) {
   let dbUnavailable = false;
 
   try {
+    if (session?.user?.email) {
+      const user = await prisma.user.findUnique({
+        where: { email: session.user.email },
+        select: { role: true },
+      });
+
+      isAdmin = user?.role === "ADMIN";
+    }
+
     news = await prisma.news.findUnique({
       where: { id },
     });
@@ -70,6 +83,9 @@ export default async function NoticiaDetallePage({ params }: PageProps) {
         </div>
         <h1>{news.title}</h1>
         <p>{formatDate(news.publishedAt)}</p>
+        {isAdmin ? (
+          <NewsDeleteButton id={news.id} title={news.title} />
+        ) : null}
       </section>
 
       <article className="news-detail stagger delay-1">

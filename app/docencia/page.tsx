@@ -3,21 +3,17 @@ import { SectionPage } from "../components/section-page";
 export default function DocenciaPage() {
   return (
     <SectionPage
-      eyebrow="Formacion"
+      eyebrow="En construccion"
       title="Docencia"
-      description="Promovemos aprendizaje basado en evidencia mediante cursos, seminarios y acompanamiento de tesistas en biologia."
+      description="Esta seccion esta en preparacion. Pronto compartiremos cursos y actividades docentes."
       blocks={[
         {
-          title: "Cursos",
-          text: "Asignaturas de biologia celular, microbiologia y metodos de investigacion cientifica.",
+          title: "En desarrollo",
+          text: "Estamos preparando el contenido para publicarlo.",
         },
         {
-          title: "Seminarios",
-          text: "Ciclos periodicos con invitados nacionales e internacionales en temas emergentes.",
-        },
-        {
-          title: "Mentoria",
-          text: "Acompaniamiento de pregrado y posgrado en escritura cientifica y gestion de datos.",
+          title: "Contacto",
+          text: "Si necesitas informacion, escribe a contacto@labbio.cl.",
         },
       ]}
     />

@@ -52,3 +52,17 @@ model News {
   updatedAt   DateTime @updatedAt
 }
 
+model TeamMember {
+  id        String   @id @default(uuid())
+  name      String
+  role      String
+  bio       String
+  email     String   @default("")
+  degrees   String   @default("")
+  photoUrl  String
+  photoName String
+  photoSize Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+

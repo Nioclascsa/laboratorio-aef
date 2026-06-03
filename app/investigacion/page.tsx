@@ -3,21 +3,17 @@ import { SectionPage } from "../components/section-page";
 export default function InvestigacionPage() {
   return (
     <SectionPage
-      eyebrow="Ciencia"
+      eyebrow="En construccion"
       title="Investigacion"
-      description="Desarrollamos lineas de investigacion en biodiversidad, microbiologia y biotecnologia con enfoque en resultados reproducibles."
+      description="Esta seccion esta en preparacion. Pronto compartiremos lineas de investigacion y avances del laboratorio."
       blocks={[
         {
-          title: "Lineas activas",
-          text: "Microbiota ambiental, ecologia molecular y biologia de sistemas aplicadas a salud y produccion.",
+          title: "En desarrollo",
+          text: "Estamos organizando contenidos y proyectos para publicarlos aqui.",
         },
         {
-          title: "Repositorio de papers",
-          text: "Gestiona articulos, protocolos y reportes en PDF para consulta interna y colaborativa.",
-        },
-        {
-          title: "Infraestructura",
-          text: "Integramos analisis computacional, laboratorio humedo y metodologias de datos experimentales.",
+          title: "Contacto",
+          text: "Si necesitas informacion, escribe a contacto@labbio.cl.",
         },
       ]}
     />

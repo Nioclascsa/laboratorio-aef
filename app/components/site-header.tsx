@@ -7,10 +7,7 @@ import { usePathname } from "next/navigation";
 const menu = [
   { href: "/", label: "Inicio" },
   { href: "/quienes-somos", label: "Quienes somos" },
-  { href: "/investigacion", label: "Investigacion" },
   { href: "/publicaciones", label: "Publicaciones" },
-  { href: "/docencia", label: "Docencia" },
-  { href: "/vinculacion", label: "Vinculacion" },
   { href: "/noticias", label: "Noticias" },
 ];
 
