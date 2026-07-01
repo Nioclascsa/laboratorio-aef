@@ -1,0 +1,156 @@
+.upload-panel {
+  background: var(--panel);
+  border-radius: 24px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  padding: clamp(1.3rem, 2.1vw, 2rem);
+}
+
+.upload-panel h2 {
+  margin-top: 0;
+  margin-bottom: 0.35rem;
+  font-family: var(--font-heading), Georgia, serif;
+  font-size: clamp(1.5rem, 2.6vw, 2.1rem);
+}
+
+.upload-panel p {
+  margin-top: 0;
+  color: #46635a;
+}
+
+.search-strip {
+  margin: -1.5rem auto 1rem;
+  z-index: 10;
+  position: relative;
+  width: min(800px, 94vw);
+}
+
+.search-container {
+  background: #ffffff;
+  padding: 0.6rem;
+  border-radius: 999px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  display: flex;
+  gap: 0.5rem;
+  border: 1px solid var(--border);
+}
+
+.search-input {
+  flex: 1;
+  border: none;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  outline: none;
+  background: transparent;
+  width: 100%;
+}
+
+.search-button {
+  background: var(--accent);
+  color: white;
+  border: none;
+  padding: 0.5rem 1.6rem;
+  border-radius: 999px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.search-button:hover {
+  background: var(--accent-strong);
+}
+
+.admin-actions {
+  margin-top: 1rem;
+  display: grid;
+  gap: 0.6rem;
+  justify-items: start;
+}
+
+.danger-button {
+  border: 2px solid #e64334;
+  border-radius: 999px;
+  padding: 0.7rem 1.2rem;
+  background: #e64334;
+  color: #ffffff;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.danger-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgba(230, 67, 52, 0.28);
+}
+
+.danger-button:disabled {
+  opacity: 0.7;
+  cursor: progress;
+}
+
+.upload-form {
+  margin-top: 1rem;
+  display: grid;
+  gap: 0.85rem;
+}
+
+.upload-form label {
+  display: block;
+  font-weight: 700;
+  font-size: 0.9rem;
+  margin-bottom: 0.3rem;
+}
+
+.upload-form input,
+.upload-form textarea {
+  width: 100%;
+  border: 1px solid #b8ccbe;
+  border-radius: 12px;
+  background: var(--panel-soft);
+  padding: 0.75rem 0.85rem;
+  font-size: 0.95rem;
+}
+
+.upload-form input:focus,
+.upload-form textarea:focus {
+  outline: 2px solid rgba(20, 114, 86, 0.35);
+  border-color: var(--accent);
+}
+
+.upload-form button {
+  justify-self: start;
+  border: 0;
+  border-radius: 999px;
+  padding: 0.72rem 1.25rem;
+  font-weight: 700;
+  color: #f8fffd;
+  background: linear-gradient(130deg, var(--accent), var(--accent-strong));
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.upload-form button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 7px 20px rgba(10, 95, 66, 0.34);
+}
+
+.upload-form button:disabled {
+  opacity: 0.7;
+  cursor: progress;
+}
+
+.status {
+  border-radius: 12px;
+  font-size: 0.9rem;
+  padding: 0.58rem 0.75rem;
+}
+
+.status.ok {
+  background: #d9f6e6;
+  color: #0c5f42;
+}
+
+.status.error {
+  background: #ffe1dc;
+  color: #8a2018;
+}
