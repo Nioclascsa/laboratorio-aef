@@ -43,6 +43,12 @@ export async function POST(request: Request) {
   const email = String(formData.get("email") || "").trim();
   const degrees = String(formData.get("degrees") || "").trim();
   const bio = String(formData.get("bio") || "").trim();
+  const researchLines = String(formData.get("researchLines") || "").trim();
+  const activeProjects = String(formData.get("activeProjects") || "").trim();
+  const courses = String(formData.get("courses") || "").trim();
+  const featuredPubs = String(formData.get("featuredPubs") || "").trim();
+  const orcid = String(formData.get("orcid") || "").trim();
+  const researchGate = String(formData.get("researchGate") || "").trim();
   const photo = formData.get("photo");
 
   if (!name || !role || !email || !degrees || !bio) {
@@ -115,6 +121,12 @@ export async function POST(request: Request) {
       email,
       degrees,
       bio,
+      researchLines,
+      activeProjects,
+      courses,
+      featuredPubs,
+      orcid,
+      researchGate,
       photoUrl: publicUrl,
       photoName: photo.name,
       photoSize: photo.size,

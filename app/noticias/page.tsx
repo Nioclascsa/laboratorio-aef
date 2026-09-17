@@ -52,10 +52,15 @@ export default async function NoticiasPage() {
   }
 
   return (
-    <main className="hero-grid section-page">
-      <section className="hero stagger">
-        <div className="news-hero">
-          <span className="badge">Actualidad</span>
+    <main className="w-full">
+      <section
+        className="hero-banner stagger !rounded-none w-full mb-12"
+        style={{
+          backgroundImage: "url('https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&q=80')",
+          borderRadius: 0,
+        }}
+      >
+        <div className="hero-banner-top">
           {isAdmin ? (
             <Link href="/noticias/admin" className="badge" style={{ textDecoration: "none" }}>
               Crear noticia
@@ -64,58 +69,60 @@ export default async function NoticiasPage() {
         </div>
         <h1>Noticias</h1>
         <p>
-          Publicamos novedades sobre avances cientificos, convocatorias, eventos y
+          Publicamos novedades sobre avances científicos, convocatorias, eventos y
           resultados de proyectos del laboratorio.
         </p>
       </section>
 
-      {dbUnavailable && (
-        <section className="upload-panel stagger delay-1" aria-label="Estado base de datos">
-          <div className="panel-head">
-            <h2>Noticias no disponibles temporalmente</h2>
-            <p>No se pudo conectar con la base de datos. Intentalo mas tarde.</p>
-          </div>
-        </section>
-      )}
+      <div className="max-w-7xl mx-auto px-6 lg:px-12 pb-16">
+        {dbUnavailable && (
+          <section className="upload-panel stagger delay-1" aria-label="Estado base de datos">
+            <div className="panel-head">
+              <h2>Noticias no disponibles temporalmente</h2>
+              <p>No se pudo conectar con la base de datos. Inténtalo más tarde.</p>
+            </div>
+          </section>
+        )}
 
-      {!dbUnavailable && news.length === 0 ? (
-        <section className="news-empty stagger delay-1" aria-label="Sin noticias">
-          <h3>Sin noticias por ahora</h3>
-          <p>Pronto compartiremos novedades del laboratorio.</p>
-        </section>
-      ) : null}
+        {!dbUnavailable && news.length === 0 ? (
+          <section className="news-empty stagger delay-1" aria-label="Sin noticias">
+            <h3>Sin noticias por ahora</h3>
+            <p>Pronto compartiremos novedades del laboratorio.</p>
+          </section>
+        ) : null}
 
-      {!dbUnavailable && news.length > 0 ? (
-        <section className="news-grid stagger delay-1" aria-label="Listado de noticias">
-          {news.map((item) => {
-            const displayDate = formatDate(item.publishedAt);
-            return (
-              <Link
-                href={`/noticias/${item.id}`}
-                className="news-card-link"
-                key={item.id}
-              >
-                <article className="news-card">
-                  <div
-                    className={`news-media ${item.imageUrl ? "" : "news-placeholder"}`}
-                  >
-                    {item.imageUrl ? (
-                      <img src={item.imageUrl} alt={`Imagen de ${item.title}`} loading="lazy" />
-                    ) : (
-                      <span className="news-fallback">Sin imagen</span>
-                    )}
-                    <span className="news-date">{displayDate}</span>
-                  </div>
-                  <div className="news-body">
-                    <h3>{item.title}</h3>
-                    <p>{getExcerpt(item.body)}</p>
-                  </div>
-                </article>
-              </Link>
-            );
-          })}
-        </section>
-      ) : null}
+        {!dbUnavailable && news.length > 0 ? (
+          <section className="news-grid stagger delay-1" aria-label="Listado de noticias">
+            {news.map((item) => {
+              const displayDate = formatDate(item.publishedAt);
+              return (
+                <Link
+                  href={`/noticias/${item.id}`}
+                  className="news-card-link"
+                  key={item.id}
+                >
+                  <article className="news-card">
+                    <div
+                      className={`news-media ${item.imageUrl ? "" : "news-placeholder"}`}
+                    >
+                      {item.imageUrl ? (
+                        <img src={item.imageUrl} alt={`Imagen de ${item.title}`} loading="lazy" />
+                      ) : (
+                        <span className="news-fallback">Sin imagen</span>
+                      )}
+                      <span className="news-date">{displayDate}</span>
+                    </div>
+                    <div className="news-body">
+                      <h3>{item.title}</h3>
+                      <p>{getExcerpt(item.body)}</p>
+                    </div>
+                  </article>
+                </Link>
+              );
+            })}
+          </section>
+        ) : null}
+      </div>
     </main>
   );
 }

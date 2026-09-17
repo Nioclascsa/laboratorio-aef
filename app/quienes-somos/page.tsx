@@ -11,6 +11,40 @@ type TeamMember = {
   photoUrl: string;
 };
 
+/** Canonical role hierarchy – order matters */
+const ROLE_ORDER = ["Jefe de Laboratorio", "Profesor", "Alumno"] as const;
+
+const ROLE_LABELS: Record<string, string> = {
+  "Jefe de Laboratorio": "Jefe de Laboratorio",
+  Profesor: "Profesores",
+  Alumno: "Alumnos",
+};
+
+function MemberCard({ member }: { member: TeamMember }) {
+  return (
+    <Link
+      href={`/quienes-somos/${member.id}`}
+      className="team-card-link"
+    >
+      <article className="team-card">
+        <div className="team-photo-wrapper">
+          <Image
+            src={member.photoUrl}
+            alt={member.name}
+            fill
+            className="team-photo"
+            sizes="(max-width: 768px) 100vw, 300px"
+          />
+        </div>
+        <div className="team-info">
+          <h3>{member.name}</h3>
+          <span className="role">{member.role}</span>
+        </div>
+      </article>
+    </Link>
+  );
+}
+
 export default async function QuienesSomosPage() {
   const session = await auth();
   let isAdmin = false;
@@ -35,11 +69,26 @@ export default async function QuienesSomosPage() {
     console.error("Error loading team:", error);
   }
 
+  // Group members by role
+  const membersByRole: Record<string, TeamMember[]> = {};
+  for (const role of ROLE_ORDER) {
+    membersByRole[role] = teamMembers.filter((m) => m.role === role);
+  }
+
+  const jefes = membersByRole["Jefe de Laboratorio"];
+  const profesores = membersByRole["Profesor"];
+  const alumnos = membersByRole["Alumno"];
+
   return (
-    <main className="hero-grid section-page">
-      <section className="hero stagger">
-        <div className="news-hero">
-          <span className="badge">Institucional</span>
+    <main className="w-full">
+      <section
+        className="hero-banner stagger !rounded-none w-full mb-12"
+        style={{
+          backgroundImage: "url('/20231207_103733.jpg')",
+          borderRadius: 0,
+        }}
+      >
+        <div className="hero-banner-top">
           {isAdmin ? (
             <Link href="/quienes-somos/admin" className="badge" style={{ textDecoration: "none" }}>
               Agregar miembro
@@ -48,70 +97,72 @@ export default async function QuienesSomosPage() {
         </div>
         <h1>Quienes somos</h1>
         <p>
-          Somos un laboratorio cientifico de biologia orientado a la investigacion aplicada, 
-          la formacion academica y la transferencia de conocimiento hacia la sociedad.
+          Somos un laboratorio científico de biología orientado a la investigación aplicada, la formación académica y la transferencia de conocimiento hacia la sociedad.
         </p>
       </section>
 
-      <section className="cards stagger delay-1" aria-label="Mision y Vision">
-        <article className="card">
-          <h3>Mision</h3>
-          <p>Generar evidencia cientifica de calidad para responder desafios biologicos regionales y globales.</p>
-        </article>
-        <article className="card">
-          <h3>Vision</h3>
-          <p>Consolidarnos como referente en investigacion biologica interdisciplinaria y ciencia abierta.</p>
-        </article>
-      </section>
-
-      <section className="team-section stagger delay-2" aria-label="Nuestro Equipo">
-        <div className="panel-head">
-          <h2>Nuestro Equipo</h2>
-          <p>Investigadores y especialistas comprometidos con la ciencia.</p>
-        </div>
-
-        {dbUnavailable ? (
-          <div className="news-empty">
-            <h3>Equipo no disponible temporalmente</h3>
-            <p>No se pudo conectar con la base de datos. Intentalo mas tarde.</p>
+      <div className="max-w-7xl mx-auto px-6 lg:px-12 pb-12">
+        <section className="team-section stagger delay-1" aria-label="Equipo AEF">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-sans font-bold text-[#28282b] tracking-tight">
+              Equipo AEF
+            </h2>
           </div>
-        ) : null}
 
-        {!dbUnavailable && teamMembers.length === 0 ? (
-          <div className="news-empty">
-            <h3>Sin miembros registrados</h3>
-            <p>Pronto compartiremos al equipo del laboratorio.</p>
-          </div>
-        ) : null}
+          {dbUnavailable ? (
+            <div className="news-empty">
+              <h3>Equipo no disponible temporalmente</h3>
+              <p>No se pudo conectar con la base de datos. Intentalo mas tarde.</p>
+            </div>
+          ) : null}
 
-        {!dbUnavailable && teamMembers.length > 0 ? (
-          <div className="team-grid">
-            {teamMembers.map((member) => (
-              <Link
-                key={member.id}
-                href={`/quienes-somos/${member.id}`}
-                className="team-card-link"
-              >
-                <article className="team-card">
-                  <div className="team-photo-wrapper">
-                    <Image
-                      src={member.photoUrl}
-                      alt={member.name}
-                      fill
-                      className="team-photo"
-                      sizes="(max-width: 768px) 100vw, 300px"
-                    />
-                  </div>
-                  <div className="team-info">
-                    <h3>{member.name}</h3>
-                    <span className="role">{member.role}</span>
-                  </div>
-                </article>
-              </Link>
-            ))}
-          </div>
-        ) : null}
-      </section>
+          {!dbUnavailable && teamMembers.length === 0 ? (
+            <div className="news-empty">
+              <h3>Sin miembros registrados</h3>
+              <p>Pronto compartiremos al equipo del laboratorio.</p>
+            </div>
+          ) : null}
+
+          {/* ── Jefe de Laboratorio ── */}
+          {!dbUnavailable && jefes.length > 0 ? (
+            <div className="team-role-group team-role-jefe">
+              <h3 className="team-role-heading">{ROLE_LABELS["Jefe de Laboratorio"]}</h3>
+              <div className="team-grid-jefe">
+                {jefes.map((member) => (
+                  <MemberCard key={member.id} member={member} />
+                ))}
+              </div>
+            </div>
+          ) : null}
+
+          {/* ── Profesores ── */}
+          {!dbUnavailable && profesores.length > 0 ? (
+            <div className="team-role-group">
+              <div className="team-role-divider" />
+              <h3 className="team-role-heading">{ROLE_LABELS["Profesor"]}</h3>
+              <div className="team-grid">
+                {profesores.map((member) => (
+                  <MemberCard key={member.id} member={member} />
+                ))}
+              </div>
+            </div>
+          ) : null}
+
+          {/* ── Alumnos ── */}
+          {!dbUnavailable && alumnos.length > 0 ? (
+            <div className="team-role-group">
+              <div className="team-role-divider" />
+              <h3 className="team-role-heading">{ROLE_LABELS["Alumno"]}</h3>
+              <div className="team-grid">
+                {alumnos.map((member) => (
+                  <MemberCard key={member.id} member={member} />
+                ))}
+              </div>
+            </div>
+          ) : null}
+        </section>
+      </div>
     </main>
   );
 }
+

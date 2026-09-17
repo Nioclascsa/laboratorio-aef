@@ -62,7 +62,12 @@ export function TeamForm() {
 
       <div>
         <label htmlFor="role">Cargo</label>
-        <input id="role" name="role" placeholder="Ej. Investigadora principal" required />
+        <select id="role" name="role" required defaultValue="">
+          <option value="" disabled>Selecciona un cargo</option>
+          <option value="Jefe de Laboratorio">Jefe de Laboratorio</option>
+          <option value="Profesor">Profesor</option>
+          <option value="Alumno">Alumno</option>
+        </select>
       </div>
 
       <div>
@@ -101,6 +106,56 @@ export function TeamForm() {
           accept="image/png,image/jpeg,image/webp"
           required
         />
+      </div>
+
+      <div>
+        <label htmlFor="researchLines">Líneas de investigación (opcional)</label>
+        <textarea
+          id="researchLines"
+          name="researchLines"
+          rows={3}
+          placeholder={"Ej. Ecología funcional de plantas\nInteracciones planta-microorganismos"}
+        />
+      </div>
+
+      <div>
+        <label htmlFor="activeProjects">Proyectos activos (opcional)</label>
+        <textarea
+          id="activeProjects"
+          name="activeProjects"
+          rows={3}
+          placeholder={"Ej. FONDECYT 1234567\nProyecto de restauración de turberas"}
+        />
+      </div>
+
+      <div>
+        <label htmlFor="courses">Asignaturas impartidas (opcional, solo académicos)</label>
+        <textarea
+          id="courses"
+          name="courses"
+          rows={3}
+          placeholder={"Ej. Botánica General\nEcología Vegetal"}
+        />
+      </div>
+
+      <div>
+        <label htmlFor="featuredPubs">Publicaciones destacadas (opcional, 2-3 máximo)</label>
+        <textarea
+          id="featuredPubs"
+          name="featuredPubs"
+          rows={4}
+          placeholder={"Ej. Atala et al. (2024) Título del paper. Revista, Vol.\nAtala et al. (2023) Otro paper. Revista, Vol."}
+        />
+      </div>
+
+      <div>
+        <label htmlFor="orcid">ORCID (opcional)</label>
+        <input id="orcid" name="orcid" type="url" placeholder="https://orcid.org/0000-0000-0000-0000" />
+      </div>
+
+      <div>
+        <label htmlFor="researchGate">ResearchGate (opcional)</label>
+        <input id="researchGate" name="researchGate" type="url" placeholder="https://www.researchgate.net/profile/Nombre-Apellido" />
       </div>
 
       <button type="submit" disabled={isLoading}>

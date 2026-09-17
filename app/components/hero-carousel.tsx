@@ -40,7 +40,7 @@ export function HeroCarousel() {
   }, [totalSlides]);
 
   return (
-    <section className="relative w-full h-screen overflow-hidden bg-black" aria-label="Galeria de fotos del laboratorio">
+    <section className="relative w-full h-screen overflow-hidden bg-[#28282b]" aria-label="Galeria de fotos del laboratorio">
       <div className="absolute inset-0 z-0">
         {slides.map((slide, index) => {
           const isActive = index === activeIndex;
@@ -51,7 +51,7 @@ export function HeroCarousel() {
               aria-hidden={!isActive}
             >
               <Image src={slide.src} alt={slide.alt} fill className="object-cover" sizes="100vw" priority={index === 0} />
-              <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/80"></div>
+              <div className="absolute inset-0 bg-gradient-to-b from-[#28282b]/60 via-[#28282b]/40 to-[#28282b]/80"></div>
             </figure>
           );
         })}
@@ -59,7 +59,7 @@ export function HeroCarousel() {
 
       {/* Content overlay */}
       <div className="relative z-10 flex flex-col items-center justify-center h-full text-center px-4">
-        <span className="inline-block py-1 px-3 rounded-full bg-white/10 border border-white/20 text-green-300 text-sm font-semibold tracking-wider uppercase mb-6 backdrop-blur-sm">
+        <span className="inline-block py-1 px-3 rounded-full bg-[#9bc837]/15 border border-[#9bc837]/30 text-[#9bc837] text-sm font-semibold tracking-wider uppercase mb-6 backdrop-blur-sm">
           Centro de investigación biológica
         </span>
         <h1 className="text-4xl md:text-7xl font-bold text-white mb-6 max-w-5xl font-heading leading-tight drop-shadow-lg">
@@ -70,7 +70,7 @@ export function HeroCarousel() {
         </p>
         
         <div className="mt-10 flex flex-col sm:flex-row gap-4">
-           <a href="/proyecto" className="bg-[#147256] hover:bg-[#0f5a45] text-white px-8 py-3.5 rounded-full font-bold transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+           <a href="/proyecto" className="bg-[#1c6576] hover:bg-[#145562] text-white px-8 py-3.5 rounded-full font-bold transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1">
              Nuestro Proyecto
            </a>
            <a href="/publicaciones" className="bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-white/30 px-8 py-3.5 rounded-full font-bold transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1">
@@ -87,7 +87,7 @@ export function HeroCarousel() {
             <button
               key={slide.alt}
               type="button"
-              className={`w-3 h-3 rounded-full transition-all duration-300 ${isActive ? "bg-[#147256] scale-125" : "bg-white/50 hover:bg-white/80"}`}
+              className={`w-3 h-3 rounded-full transition-all duration-300 ${isActive ? "bg-[#f78117] scale-125" : "bg-white/50 hover:bg-white/80"}`}
               onClick={() => setActiveIndex(index)}
               aria-label={`Mostrar imagen ${index + 1}`}
               aria-selected={isActive}

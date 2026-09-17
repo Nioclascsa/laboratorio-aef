@@ -58,7 +58,7 @@ export default async function NoticiaDetallePage({ params }: PageProps) {
         <section className="upload-panel" aria-label="Estado base de datos">
           <div className="panel-head">
             <h2>Noticia no disponible temporalmente</h2>
-            <p>No se pudo conectar con la base de datos. Intentalo mas tarde.</p>
+            <p>No se pudo conectar con la base de datos. Inténtalo más tarde.</p>
           </div>
           <Link href="/noticias" className="filter-button" style={{ textDecoration: "none" }}>
             Volver a noticias

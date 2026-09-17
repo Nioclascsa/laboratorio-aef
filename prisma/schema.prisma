@@ -53,16 +53,35 @@ model News {
 }
 
 model TeamMember {
-  id        String   @id @default(uuid())
-  name      String
-  role      String
-  bio       String
-  email     String   @default("")
-  degrees   String   @default("")
-  photoUrl  String
-  photoName String
-  photoSize Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id             String   @id @default(uuid())
+  name           String
+  role           String
+  bio            String
+  email          String   @default("")
+  degrees        String   @default("")
+  photoUrl       String
+  photoName      String
+  photoSize      Int
+  researchLines  String   @default("")
+  activeProjects String   @default("")
+  courses        String   @default("")
+  featuredPubs   String   @default("")
+  orcid          String   @default("")
+  researchGate   String   @default("")
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model Outreach {
+  id          String   @id @default(uuid())
+  title       String
+  body        String
+  category    String   @default("general")
+  publishedAt DateTime
+  imageUrl    String?
+  imageName   String?
+  imageSize   Int?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 

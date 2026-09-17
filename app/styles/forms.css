@@ -15,7 +15,7 @@
 
 .upload-panel p {
   margin-top: 0;
-  color: #46635a;
+  color: #5a5a60;
 }
 
 .search-strip {
@@ -102,9 +102,10 @@
 }
 
 .upload-form input,
+.upload-form select,
 .upload-form textarea {
   width: 100%;
-  border: 1px solid #b8ccbe;
+  border: 1px solid #c0ccc2;
   border-radius: 12px;
   background: var(--panel-soft);
   padding: 0.75rem 0.85rem;
@@ -112,8 +113,9 @@
 }
 
 .upload-form input:focus,
+.upload-form select:focus,
 .upload-form textarea:focus {
-  outline: 2px solid rgba(20, 114, 86, 0.35);
+  outline: 2px solid rgba(28, 101, 118, 0.35);
   border-color: var(--accent);
 }
 
@@ -131,7 +133,7 @@
 
 .upload-form button:hover {
   transform: translateY(-1px);
-  box-shadow: 0 7px 20px rgba(10, 95, 66, 0.34);
+  box-shadow: 0 7px 20px rgba(28, 101, 118, 0.34);
 }
 
 .upload-form button:disabled {
@@ -146,8 +148,8 @@
 }
 
 .status.ok {
-  background: #d9f6e6;
-  color: #0c5f42;
+  background: #dff6e6;
+  color: #1a6b42;
 }
 
 .status.error {

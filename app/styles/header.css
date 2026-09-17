@@ -2,19 +2,21 @@
   position: sticky;
   top: 0;
   z-index: 40;
-  backdrop-filter: blur(6px);
-  background: linear-gradient(120deg, #0f5d46 0%, #147256 60%, #188063 100%);
-  border-bottom: 1px solid rgba(9, 54, 41, 0.7);
+  backdrop-filter: blur(8px);
+  background: linear-gradient(120deg, #28282b 0%, #1c6576 60%, #1f7a8d 100%);
+  border-bottom: 1px solid rgba(20, 20, 22, 0.7);
 }
 
 .site-header-inner {
-  width: min(1120px, 94vw);
-  margin: 0 auto;
-  min-height: 74px;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  min-height: 90px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1.1rem;
+  gap: 1.5rem;
+  padding: 0.5rem clamp(1rem, 2.5vw, 2.5rem);
 }
 
 .brand-mark {
@@ -27,20 +29,33 @@
   align-items: center;
   gap: 0.65rem;
   margin-left: 0;
+  flex-shrink: 0;
+}
+
+.brand-logo-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
 }
 
 .brand-logo {
-  width: 100px;
-  height: 100px;
+  height: 64px;
+  width: auto;
+  max-width: 290px;
   object-fit: contain;
+  transition: transform 0.2s ease;
+}
+
+.brand-logo-link:hover .brand-logo {
+  transform: scale(1.02);
 }
 
 .site-nav {
   display: flex;
   flex-wrap: nowrap;
   align-items: center;
-  gap: 0.45rem;
-  justify-content: flex-end;
+  gap: 0.65rem;
+  justify-content: center;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: thin;
@@ -59,11 +74,12 @@
   text-decoration: none;
   color: #ffffff;
   font-weight: 700;
-  font-size: 0.92rem;
-  padding: 0.45rem 0.78rem;
+  font-size: 1.05rem;
+  padding: 0.55rem 0.95rem;
   border-radius: 999px;
   border: 1px solid rgba(236, 255, 244, 0.22);
   transition: all 0.15s ease;
+  white-space: nowrap;
 }
 
 .nav-link:hover {
@@ -72,26 +88,157 @@
 }
 
 .nav-link.active {
-  color: #0f5d46;
+  color: #1c6576;
   border-color: rgba(255, 255, 255, 0.95);
   background: #ffffff;
 }
 
-@media (max-width: 740px) {
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
+.institute-logo-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.institute-logo {
+  height: 64px;
+  width: auto;
+  max-width: 230px;
+  object-fit: contain;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  opacity: 0.95;
+}
+
+.institute-logo-link:hover .institute-logo {
+  transform: scale(1.03);
+  opacity: 1;
+}
+
+.hamburger-btn {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 28px;
+  height: 22px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 50;
+  position: relative;
+}
+
+.hamburger-line {
+  width: 100%;
+  height: 2.5px;
+  background-color: #ffffff;
+  border-radius: 999px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-origin: center;
+}
+
+.hamburger-btn.open .hamburger-line:nth-child(1) {
+  transform: translateY(9.5px) rotate(45deg);
+}
+
+.hamburger-btn.open .hamburger-line:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0);
+}
+
+.hamburger-btn.open .hamburger-line:nth-child(3) {
+  transform: translateY(-9.5px) rotate(-45deg);
+}
+
+@keyframes slideDownFade {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 1080px) {
   .site-header-inner {
-    min-height: 66px;
-    padding: 0.45rem 0;
-    align-items: flex-start;
-    flex-direction: column;
+    min-height: 78px;
+    padding: 0.35rem 1rem;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .brand-logo {
+    height: 52px;
+    max-width: 230px;
+  }
+
+  .institute-logo {
+    height: 52px;
+    max-width: 180px;
+  }
+
+  .hamburger-btn {
+    display: flex;
   }
 
   .site-nav {
+    display: none;
+    position: absolute;
+    top: 78px;
+    left: 0;
     width: 100%;
-    justify-content: flex-start;
-    padding-bottom: 0.35rem;
+    background: linear-gradient(135deg, #28282b 0%, #1c6576 60%, #1f7a8d 100%);
+    border-bottom: 1px solid rgba(20, 20, 22, 0.85);
+    flex-direction: column;
+    padding: 1.5rem 1.2rem;
+    gap: 0.85rem;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    z-index: 30;
+    overflow-y: auto;
+    max-height: calc(100vh - 78px);
+  }
+
+  .site-nav.open {
+    display: flex;
+    animation: slideDownFade 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   }
 
   .nav-link {
-    white-space: nowrap;
+    width: 100%;
+    text-align: center;
+    padding: 0.85rem 1.2rem;
+    font-size: 1.12rem;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+  }
+}
+
+@media (max-width: 560px) {
+  .site-header-inner {
+    padding: 0.35rem 0.65rem;
+  }
+
+  .brand-logo {
+    height: 40px;
+    max-width: 160px;
+  }
+
+  .institute-logo {
+    height: 38px;
+    max-width: 120px;
+  }
+
+  .header-right {
+    gap: 0.65rem;
   }
 }

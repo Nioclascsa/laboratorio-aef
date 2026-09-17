@@ -1,14 +1,16 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f3f7f2;
-  --foreground: #11231e;
+  --background: #f5f7f5;
+  --foreground: #28282b;
   --panel: #ffffff;
-  --panel-soft: #edf4eb;
-  --accent: #147256;
-  --accent-strong: #0f5a45;
-  --border: #c7d8cb;
-  --shadow: 0 16px 40px rgba(18, 61, 49, 0.14);
+  --panel-soft: #f0f4f1;
+  --accent: #1c6576;
+  --accent-strong: #145562;
+  --accent-orange: #f78117;
+  --accent-lime: #9bc837;
+  --border: #d8ddd9;
+  --shadow: 0 16px 40px rgba(40, 40, 43, 0.12);
 }
 
 @theme inline {
@@ -23,9 +25,9 @@ body {
   color: var(--foreground);
   font-family: var(--font-body), "Segoe UI", sans-serif;
   background:
-    radial-gradient(circle at 15% 5%, #d6e8d6 0%, transparent 38%),
-    radial-gradient(circle at 86% 8%, #d9f0e7 0%, transparent 42%),
-    linear-gradient(180deg, #f8fbf7 0%, #eef5ed 55%, #e6f1e7 100%);
+    radial-gradient(circle at 15% 5%, #d6e3e8 0%, transparent 38%),
+    radial-gradient(circle at 86% 8%, #d9eaf0 0%, transparent 42%),
+    linear-gradient(180deg, #f8faf8 0%, #f0f4f1 55%, #eaf0ec 100%);
   min-height: 100vh;
 }
 
@@ -35,3 +37,105 @@ body {
     transform: translateY(0);
   }
 }
+
+.hero-banner {
+  position: relative;
+  width: 100%;
+  min-height: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: #fff;
+  background-color: var(--accent-strong);
+  background-size: cover;
+  background-position: center;
+  border-radius: 24px;
+  overflow: hidden;
+  margin-bottom: 2.5rem;
+  box-shadow: var(--shadow);
+  padding: 2rem;
+}
+
+.hero-banner::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(28, 28, 30, 0.6);
+}
+
+.hero-banner > * {
+  position: relative;
+  z-index: 1;
+}
+
+.hero-banner h1 {
+  font-family: var(--font-heading);
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  margin: 0;
+  letter-spacing: 0.02em;
+  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.hero-banner p {
+  font-size: clamp(1.05rem, 2vw, 1.25rem);
+  max-width: 700px;
+  margin: 1rem auto 0;
+  opacity: 0.95;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.hero-banner-top {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.hero-banner .badge {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(12px);
+  color: #fff;
+  padding: 0.5rem 1.2rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.hero-banner .badge:hover {
+  background: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.6);
+}
+
+.instagram-grid {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: wrap !important;
+  justify-content: center !important;
+  align-items: flex-start !important;
+  gap: 2rem !important;
+  width: 100% !important;
+}
+
+.instagram-embed {
+  flex: 1 1 320px !important;
+  max-width: 400px !important;
+  min-width: 280px !important;
+  display: flex !important;
+  justify-content: center !important;
+}
+
+.instagram-embed iframe {
+  max-width: 100% !important;
+  min-width: 280px !important;
+  margin: 0 auto !important;
+  border-radius: 16px !important;
+}
+
