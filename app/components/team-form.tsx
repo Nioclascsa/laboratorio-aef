@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useState } from "react";
+import { TEAM_ROLES } from "@/lib/team-roles";
 
 type TeamResponse = {
   id: string;
@@ -64,9 +65,11 @@ export function TeamForm() {
         <label htmlFor="role">Cargo</label>
         <select id="role" name="role" required defaultValue="">
           <option value="" disabled>Selecciona un cargo</option>
-          <option value="Jefe de Laboratorio">Jefe de Laboratorio</option>
-          <option value="Profesor">Profesor</option>
-          <option value="Alumno">Alumno</option>
+          {TEAM_ROLES.map((role) => (
+            <option key={role} value={role}>
+              {role}
+            </option>
+          ))}
         </select>
       </div>
 

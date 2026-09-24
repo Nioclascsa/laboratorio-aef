@@ -20,7 +20,7 @@ describe("HeroCarousel component", () => {
     expect(
       screen.getByText("Somos un laboratorio en la PUCV dedicado al estudio de la biodiversidad de plantas y hongos")
     ).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "Nuestro Proyecto" })).toHaveAttribute("href", "/proyecto");
+    expect(screen.queryByRole("link", { name: "Nuestro Proyecto" })).not.toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Publicaciones" })).toHaveAttribute("href", "/publicaciones");
   });
 

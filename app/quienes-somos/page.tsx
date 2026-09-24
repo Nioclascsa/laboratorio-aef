@@ -3,21 +3,13 @@ import Link from "next/link";
 
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
+import { TEAM_ROLES, TEAM_ROLE_LABELS, type TeamRole } from "@/lib/team-roles";
 
 type TeamMember = {
   id: string;
   name: string;
   role: string;
   photoUrl: string;
-};
-
-/** Canonical role hierarchy – order matters */
-const ROLE_ORDER = ["Jefe de Laboratorio", "Profesor", "Alumno"] as const;
-
-const ROLE_LABELS: Record<string, string> = {
-  "Jefe de Laboratorio": "Jefe de Laboratorio",
-  Profesor: "Profesores",
-  Alumno: "Alumnos",
 };
 
 function MemberCard({ member }: { member: TeamMember }) {
@@ -71,13 +63,24 @@ export default async function QuienesSomosPage() {
 
   // Group members by role
   const membersByRole: Record<string, TeamMember[]> = {};
-  for (const role of ROLE_ORDER) {
+  for (const role of TEAM_ROLES) {
     membersByRole[role] = teamMembers.filter((m) => m.role === role);
   }
 
-  const jefes = membersByRole["Jefe de Laboratorio"];
-  const profesores = membersByRole["Profesor"];
-  const alumnos = membersByRole["Alumno"];
+  // Handle any members that may have a custom or legacy role
+  const extraRoles = Array.from(
+    new Set(
+      teamMembers
+        .map((m) => m.role)
+        .filter((r) => !TEAM_ROLES.includes(r as TeamRole))
+    )
+  );
+
+  for (const role of extraRoles) {
+    membersByRole[role] = teamMembers.filter((m) => m.role === role);
+  }
+
+  const allRolesToRender = [...TEAM_ROLES, ...extraRoles];
 
   return (
     <main className="w-full">
@@ -123,43 +126,40 @@ export default async function QuienesSomosPage() {
             </div>
           ) : null}
 
-          {/* ── Jefe de Laboratorio ── */}
-          {!dbUnavailable && jefes.length > 0 ? (
-            <div className="team-role-group team-role-jefe">
-              <h3 className="team-role-heading">{ROLE_LABELS["Jefe de Laboratorio"]}</h3>
-              <div className="team-grid-jefe">
-                {jefes.map((member) => (
-                  <MemberCard key={member.id} member={member} />
-                ))}
-              </div>
-            </div>
-          ) : null}
+          {!dbUnavailable &&
+            allRolesToRender.map((role) => {
+              const members = membersByRole[role] || [];
+              if (members.length === 0) return null;
 
-          {/* ── Profesores ── */}
-          {!dbUnavailable && profesores.length > 0 ? (
-            <div className="team-role-group">
-              <div className="team-role-divider" />
-              <h3 className="team-role-heading">{ROLE_LABELS["Profesor"]}</h3>
-              <div className="team-grid">
-                {profesores.map((member) => (
-                  <MemberCard key={member.id} member={member} />
-                ))}
-              </div>
-            </div>
-          ) : null}
+              if (role === "Jefe de Laboratorio") {
+                return (
+                  <div key={role} className="team-role-group team-role-jefe">
+                    <h3 className="team-role-heading">
+                      {TEAM_ROLE_LABELS[role] || role}
+                    </h3>
+                    <div className="team-grid-jefe">
+                      {members.map((member) => (
+                        <MemberCard key={member.id} member={member} />
+                      ))}
+                    </div>
+                  </div>
+                );
+              }
 
-          {/* ── Alumnos ── */}
-          {!dbUnavailable && alumnos.length > 0 ? (
-            <div className="team-role-group">
-              <div className="team-role-divider" />
-              <h3 className="team-role-heading">{ROLE_LABELS["Alumno"]}</h3>
-              <div className="team-grid">
-                {alumnos.map((member) => (
-                  <MemberCard key={member.id} member={member} />
-                ))}
-              </div>
-            </div>
-          ) : null}
+              return (
+                <div key={role} className="team-role-group">
+                  <div className="team-role-divider" />
+                  <h3 className="team-role-heading">
+                    {TEAM_ROLE_LABELS[role] || role}
+                  </h3>
+                  <div className="team-grid">
+                    {members.map((member) => (
+                      <MemberCard key={member.id} member={member} />
+                    ))}
+                  </div>
+                </div>
+              );
+            })}
         </section>
       </div>
     </main>

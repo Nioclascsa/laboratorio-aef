@@ -48,6 +48,12 @@ describe("TeamEditButton", () => {
     expect(screen.getByRole("heading", { name: "Editar investigador" })).toBeInTheDocument();
     expect(screen.getByLabelText(/Nombre completo/i)).toHaveValue("Dr. Roberto García");
     expect(screen.getByLabelText(/Cargo/i)).toHaveValue("Profesor");
+    const roleSelect = screen.getByLabelText(/Cargo/i);
+    expect(roleSelect).toContainHTML("Investigador");
+    expect(roleSelect).toContainHTML("Colaborador externo");
+    expect(roleSelect).toContainHTML("Jefe de Laboratorio");
+    expect(roleSelect).toContainHTML("Profesor");
+    expect(roleSelect).toContainHTML("Alumno");
     expect(screen.getByLabelText(/Correo electrónico/i)).toHaveValue("roberto.garcia@pucv.cl");
     expect(screen.getByLabelText(/Biografía/i)).toHaveValue("Biólogo vegetal con experiencia en fisiología.");
     expect(screen.getByLabelText(/ORCID/i)).toHaveValue("https://orcid.org/0000-0001-2345-6789");

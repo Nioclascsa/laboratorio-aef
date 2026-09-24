@@ -27,6 +27,13 @@ describe("TeamForm component", () => {
     expect(screen.getByLabelText(/ResearchGate/i)).toBeInTheDocument();
 
     expect(screen.getByRole("button", { name: "Agregar miembro" })).toBeInTheDocument();
+
+    const roleSelect = screen.getByLabelText(/Cargo/i);
+    expect(roleSelect).toContainHTML("Investigador");
+    expect(roleSelect).toContainHTML("Colaborador externo");
+    expect(roleSelect).toContainHTML("Jefe de Laboratorio");
+    expect(roleSelect).toContainHTML("Profesor");
+    expect(roleSelect).toContainHTML("Alumno");
   });
 
   it("handles successful form submission", async () => {

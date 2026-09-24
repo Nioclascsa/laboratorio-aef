@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { FormEvent, useState, useEffect } from "react";
 import Image from "next/image";
+import { TEAM_ROLES, type TeamRole } from "@/lib/team-roles";
 
 export type TeamMemberEditable = {
   id: string;
@@ -185,9 +186,14 @@ export function TeamEditButton({ member }: TeamEditButtonProps) {
                     required
                     className="w-full bg-[#f5f7f5] border border-[#d0d5d1] rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-[#1c6576]/30 focus:border-[#1c6576] transition-all text-[#28282b] text-sm"
                   >
-                    <option value="Jefe de Laboratorio">Jefe de Laboratorio</option>
-                    <option value="Profesor">Profesor</option>
-                    <option value="Alumno">Alumno</option>
+                    {TEAM_ROLES.map((role) => (
+                      <option key={role} value={role}>
+                        {role}
+                      </option>
+                    ))}
+                    {!TEAM_ROLES.includes(member.role as TeamRole) && member.role ? (
+                      <option value={member.role}>{member.role}</option>
+                    ) : null}
                   </select>
                 </div>
               </div>

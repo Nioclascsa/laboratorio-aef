@@ -150,8 +150,7 @@ export default async function PublicacionesPage({ searchParams }: PageProps) {
             Publicaciones
           </h1>
           <p className="text-lg md:text-xl text-white/80 max-w-2xl font-light">
-            Accede a nuestra colección de artículos científicos, tesis y reportes técnicos.
-            Contribuye al conocimiento subiendo nuevas evidencias.
+            Accede a los artículos que han sido publicados con afiliación a nuestro laboratorio.
           </p>
         </div>
       </section>

@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 
 type Slide = {
@@ -67,12 +68,12 @@ export function HeroCarousel() {
         </p>
         
         <div className="mt-10 flex flex-col sm:flex-row gap-4">
-           <a href="/proyecto" className="bg-[#1c6576] hover:bg-[#145562] text-white px-8 py-3.5 rounded-full font-bold transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1">
-             Nuestro Proyecto
-           </a>
-           <a href="/publicaciones" className="bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-white/30 px-8 py-3.5 rounded-full font-bold transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1">
-             Publicaciones
-           </a>
+          <Link
+            href="/publicaciones"
+            className="bg-[#1c6576] hover:bg-[#145562] text-white px-8 py-3.5 rounded-full font-bold transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+          >
+            Publicaciones
+          </Link>
         </div>
       </div>
 
