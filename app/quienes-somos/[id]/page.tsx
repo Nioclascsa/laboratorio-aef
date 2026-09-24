@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { TeamDeleteButton } from "@/app/components/team-delete-button";
+import { TeamEditButton } from "@/app/components/team-edit-button";
 
 type PageProps = {
   params: Promise<{
@@ -104,7 +105,12 @@ export default async function TeamMemberPage({ params }: PageProps) {
           </svg>
           Volver al equipo
         </Link>
-        {isAdmin ? <TeamDeleteButton id={member.id} name={member.name} /> : null}
+        {isAdmin ? (
+          <div className="flex flex-wrap items-center gap-3 [&_.admin-actions]:!mt-0">
+            <TeamEditButton member={member} />
+            <TeamDeleteButton id={member.id} name={member.name} />
+          </div>
+        ) : null}
       </div>
 
       {/* ── Hero: Photo + Identity ── */}

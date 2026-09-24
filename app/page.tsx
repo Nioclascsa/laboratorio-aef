@@ -74,9 +74,10 @@ export default async function Home() {
           </h2>
           <div className="h-1 w-24 bg-[#f78117] mx-auto mb-8 rounded-full"></div>
           <p className="text-lg md:text-xl text-[#5a5a60] leading-relaxed">
-            Integramos trabajo de laboratorio, terreno y analítica de datos para generar evidencia
-            útil en políticas públicas, educación y gestión ambiental. Comprendemos y anticipamos
-            los riesgos ecosistémicos para proteger la vida en sus condiciones más extremas.
+            Conectamos la ciencia y la naturaleza a través de experiencias de aprendizaje,
+            divulgación y trabajo colaborativo. Acercamos el conocimiento científico a estudiantes,
+            comunidades y organizaciones, promoviendo una comprensión más profunda de la biodiversidad
+            y de los procesos ecológicos que sustentan la vida en distintos ambientes.
           </p>
         </div>
       </section>
