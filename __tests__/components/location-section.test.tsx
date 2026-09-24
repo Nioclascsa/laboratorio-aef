@@ -22,20 +22,20 @@ describe("LocationSection component", () => {
     expect(satelliteBtn).toBeInTheDocument();
     expect(mapBtn).toBeInTheDocument();
 
-    const iframe = screen.getByTitle("Vista de calle - Laboratorio AEF");
-    expect(iframe).toHaveAttribute("src", expect.stringContaining("layer=c"));
+    const iframe = screen.getByTitle("Mapa de ubicación - Laboratorio AEF");
+    expect(iframe).toHaveAttribute("src", expect.stringContaining("t=m"));
 
     // Switch to satellite
     fireEvent.click(satelliteBtn);
     expect(iframe).toHaveAttribute("src", expect.stringContaining("t=k"));
 
-    // Switch to standard map
-    fireEvent.click(mapBtn);
-    expect(iframe).toHaveAttribute("src", expect.stringContaining("t=m"));
-
-    // Switch back to street view
+    // Switch to street view
     fireEvent.click(streetViewBtn);
     expect(iframe).toHaveAttribute("src", expect.stringContaining("layer=c"));
+
+    // Switch back to standard map
+    fireEvent.click(mapBtn);
+    expect(iframe).toHaveAttribute("src", expect.stringContaining("t=m"));
   });
 
   it("renders Google Maps external link and social media links", () => {

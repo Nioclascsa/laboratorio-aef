@@ -11,18 +11,18 @@ type Slide = {
 
 const slides: Slide[] = [
   {
-    src: "https://images.unsplash.com/photo-1530026405186-ed1f139313f8?auto=format&fit=crop&w=1600&q=80",
-    alt: "Investigadora observando muestras biologicas en laboratorio",
+    src: "/portada.jpg",
+    alt: "Flor nativa en estudio botánico de biodiversidad",
     caption: "Investigacion de biodiversidad con estandares de excelencia.",
   },
   {
-    src: "https://images.unsplash.com/photo-1579165466741-7f35e4755660?auto=format&fit=crop&w=1600&q=80",
-    alt: "Estudio de plantas y ecosistemas en trabajo de campo",
+    src: "/portada2.jpg",
+    alt: "Inflorescencia de Puya frente a la costa",
     caption: "Trabajo en terreno para entender cambios ecosistemicos.",
   },
   {
-    src: "https://images.unsplash.com/photo-1576086213369-97a306d36557?auto=format&fit=crop&w=1600&q=80",
-    alt: "Equipo analizando datos cientificos en computador",
+    src: "/portada3.jpg",
+    alt: "Añañuca en hábitat natural rocoso",
     caption: "Datos, docencia y transferencia hacia la sociedad.",
   },
 ];
@@ -59,14 +59,11 @@ export function HeroCarousel() {
 
       {/* Content overlay */}
       <div className="relative z-10 flex flex-col items-center justify-center h-full text-center px-4">
-        <span className="inline-block py-1 px-3 rounded-full bg-[#9bc837]/15 border border-[#9bc837]/30 text-[#9bc837] text-sm font-semibold tracking-wider uppercase mb-6 backdrop-blur-sm">
-          Centro de investigación biológica
-        </span>
         <h1 className="text-4xl md:text-7xl font-bold text-white mb-6 max-w-5xl font-heading leading-tight drop-shadow-lg">
-          Laboratorio Científico de Biología Aplicada
+          Laboratorio AEF
         </h1>
         <p className="text-lg md:text-2xl text-gray-200 max-w-3xl font-light drop-shadow-md">
-          Institución dedicada a investigación científica de excelencia, docencia y transferencia de conocimiento para la conservación de la biodiversidad.
+          Somos un laboratorio en la PUCV dedicado al estudio de la biodiversidad de plantas y hongos
         </p>
         
         <div className="mt-10 flex flex-col sm:flex-row gap-4">

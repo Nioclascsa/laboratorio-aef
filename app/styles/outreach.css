@@ -94,7 +94,6 @@
 
 .outreach-row-link:hover .outreach-row {
   background: var(--panel-soft);
-  border-radius: 16px;
   padding-left: 1.5rem;
   padding-right: 1.5rem;
 }
@@ -112,7 +111,6 @@
 .outreach-row-media {
   position: relative;
   aspect-ratio: 4 / 3;
-  border-radius: 16px;
   overflow: hidden;
   background: #dce8ea;
   box-shadow: 0 8px 24px rgba(40, 40, 43, 0.1);
@@ -234,7 +232,6 @@
   width: 100%;
   aspect-ratio: 16 / 9;
   background: #dce8ea;
-  border-radius: 16px;
   overflow: hidden;
 }
 

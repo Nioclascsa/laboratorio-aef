@@ -51,7 +51,7 @@ body {
   background-color: var(--accent-strong);
   background-size: cover;
   background-position: center;
-  border-radius: 24px;
+  border-radius: 0;
   overflow: hidden;
   margin-bottom: 2.5rem;
   box-shadow: var(--shadow);

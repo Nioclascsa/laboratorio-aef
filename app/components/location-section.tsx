@@ -2,10 +2,10 @@
 
 import { useState } from "react";
 
-type ViewMode = "streetview" | "satellite" | "map";
+type ViewMode = "map" | "satellite" | "streetview";
 
 export function LocationSection() {
-  const [viewMode, setViewMode] = useState<ViewMode>("streetview");
+  const [viewMode, setViewMode] = useState<ViewMode>("map");
 
   const address = "Avenida Universidad 330, Valparaíso, Chile";
   const reference =
@@ -32,12 +32,12 @@ export function LocationSection() {
 
         {/* 2-Column Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
-          {/* Left Column: Street View / Interactive Panorama */}
+          {/* Left Column: Mapa interactivo grande con selector de vistas */}
           <div className="lg:col-span-7 flex flex-col">
             <div className="relative w-full aspect-[4/3] sm:aspect-[16/11] rounded-2xl overflow-hidden shadow-[0_10px_30px_rgba(0,0,0,0.08)] border border-[#d8ddd9] bg-[#eef2ef]">
               {/* Embed Frame */}
               <iframe
-                title="Vista de calle - Laboratorio AEF"
+                title="Mapa de ubicación - Laboratorio AEF"
                 src={
                   viewMode === "streetview"
                     ? streetViewEmbedUrl
@@ -55,15 +55,15 @@ export function LocationSection() {
               <div className="absolute top-3 right-3 flex items-center bg-white/90 backdrop-blur-md rounded-xl p-1 shadow-md border border-gray-200 z-10">
                 <button
                   type="button"
-                  onClick={() => setViewMode("streetview")}
+                  onClick={() => setViewMode("map")}
                   className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-all ${
-                    viewMode === "streetview"
+                    viewMode === "map"
                       ? "bg-[#1c6576] text-white shadow-sm"
                       : "text-[#5a5a60] hover:text-[#28282b]"
                   }`}
-                  title="Vista 360° de la calle"
+                  title="Mapa estándar"
                 >
-                  Street View
+                  Mapa
                 </button>
                 <button
                   type="button"
@@ -79,62 +79,49 @@ export function LocationSection() {
                 </button>
                 <button
                   type="button"
-                  onClick={() => setViewMode("map")}
+                  onClick={() => setViewMode("streetview")}
                   className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-all ${
-                    viewMode === "map"
+                    viewMode === "streetview"
                       ? "bg-[#1c6576] text-white shadow-sm"
                       : "text-[#5a5a60] hover:text-[#28282b]"
                   }`}
-                  title="Mapa estándar"
+                  title="Vista 360° de la calle"
                 >
-                  Mapa
+                  Street View
                 </button>
               </div>
             </div>
           </div>
 
-          {/* Right Column: Dirección, Map Preview & Redes Sociales */}
-          <div className="lg:col-span-5 flex flex-col justify-between space-y-8">
+          {/* Right Column: Dirección, Abrir en Maps & Redes Sociales */}
+          <div className="lg:col-span-5 flex flex-col justify-between space-y-8 bg-[#f8faf9] p-6 sm:p-8 rounded-2xl border border-[#e2e6e3] shadow-sm">
             {/* Dirección */}
             <div>
-              <div className="border-b border-[#e2e6e3] pb-2 mb-4">
+              <div className="border-b border-[#e2e6e3] pb-3 mb-4">
                 <h3 className="text-2xl font-bold text-[#28282b] font-heading">
                   Dirección:
                 </h3>
               </div>
-              <ul className="space-y-3 text-[#404045] text-base leading-relaxed">
+              <ul className="space-y-3.5 text-[#404045] text-base leading-relaxed mb-6">
                 <li className="flex items-start">
-                  <span className="inline-block w-2 h-2 rounded-full bg-[#1c6576] mt-2 mr-3 flex-shrink-0" />
-                  <span>{address}</span>
+                  <span className="inline-block w-2.5 h-2.5 rounded-full bg-[#1c6576] mt-1.5 mr-3 flex-shrink-0" />
+                  <span className="font-semibold text-[#28282b]">{address}</span>
                 </li>
                 <li className="flex items-start">
-                  <span className="inline-block w-2 h-2 rounded-full bg-[#1c6576] mt-2 mr-3 flex-shrink-0" />
+                  <span className="inline-block w-2.5 h-2.5 rounded-full bg-[#1c6576] mt-1.5 mr-3 flex-shrink-0" />
                   <span>{reference}</span>
                 </li>
               </ul>
-            </div>
 
-            {/* Embedded Google Map */}
-            <div className="relative w-full h-52 sm:h-56 rounded-2xl overflow-hidden shadow-[0_6px_20px_rgba(0,0,0,0.06)] border border-[#d8ddd9] bg-[#eef2ef]">
-              <iframe
-                title="Mapa de ubicación - Campus Curauma PUCV"
-                src={standardMapEmbedUrl}
-                className="w-full h-full border-0"
-                allowFullScreen
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-              />
-
-              {/* Float "Abrir en Maps" badge */}
               <a
                 href={mapsSearchUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="absolute top-3 left-3 bg-white/95 hover:bg-white text-[#1c6576] hover:text-[#145562] font-semibold text-xs px-3.5 py-2 rounded-lg shadow-md border border-gray-200 transition-all flex items-center gap-1.5 group backdrop-blur-sm z-10"
+                className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-[#1c6576] hover:bg-[#145562] text-white font-semibold text-sm shadow-md hover:shadow-lg transition-all group"
               >
                 <span>Abrir en Maps</span>
                 <svg
-                  className="w-3.5 h-3.5 transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"
+                  className="w-4 h-4 transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"
                   fill="none"
                   stroke="currentColor"
                   strokeWidth="2.2"
@@ -150,7 +137,7 @@ export function LocationSection() {
             </div>
 
             {/* Nuestras Redes Sociales */}
-            <div className="pt-2">
+            <div className="pt-6 border-t border-[#e2e6e3]">
               <h3 className="text-xl font-bold text-[#28282b] font-heading mb-4">
                 Nuestras Redes Sociales:
               </h3>

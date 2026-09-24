@@ -1,4 +1,6 @@
 import { UploadForm } from "../components/upload-form";
+import { PaperDeleteButton } from "../components/paper-delete-button";
+import { PaperEditForm } from "../components/paper-edit-form";
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
 import { auth } from "@/auth";
@@ -268,10 +270,7 @@ export default async function PublicacionesPage({ searchParams }: PageProps) {
 
           {/* Main Content / Results */}
           <div className="lg:col-span-3">
-            <div className="flex items-center justify-between mb-8">
-              <h2 className="text-2xl font-bold text-[#28282b]">
-                {filteredPapers.length > 0 ? 'Documentos Encontrados' : 'Sin Resultados'}
-              </h2>
+            <div className="flex items-center justify-end mb-6">
               <span className="bg-[#d8ddd9] text-[#3a3a40] font-bold py-1 px-3 rounded-full text-sm">
                 {filteredPapers.length} {filteredPapers.length === 1 ? 'resultado' : 'resultados'}
               </span>
@@ -321,7 +320,7 @@ export default async function PublicacionesPage({ searchParams }: PageProps) {
                         )}
                       </div>
 
-                      <div className="sm:w-48 flex sm:flex-col items-center sm:items-end justify-between sm:justify-start pt-2 shrink-0 border-t sm:border-t-0 sm:border-l border-[#d8ddd9] sm:pl-6 gap-4">
+                      <div className="sm:w-48 flex sm:flex-col items-center sm:items-end justify-between sm:justify-start pt-2 shrink-0 border-t sm:border-t-0 sm:border-l border-[#d8ddd9] sm:pl-6 gap-3">
                         <Link
                           href={paper.storagePath}
                           target="_blank"
@@ -330,6 +329,27 @@ export default async function PublicacionesPage({ searchParams }: PageProps) {
                           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
                           Descargar
                         </Link>
+
+                        {session?.user && (
+                          <>
+                            <PaperEditForm
+                              id={paper.id}
+                              initialTitle={paper.title}
+                              initialAuthors={paper.authors}
+                              initialJournal={paper.journal ?? ""}
+                              initialPublicationDate={
+                                (paper.publicationDate ?? paper.uploadedAt)
+                                  .toISOString()
+                                  .split("T")[0]
+                              }
+                              initialSummary={paper.summary ?? ""}
+                            />
+                            <PaperDeleteButton
+                              id={paper.id}
+                              title={paper.title}
+                            />
+                          </>
+                        )}
                       </div>
 
                     </article>

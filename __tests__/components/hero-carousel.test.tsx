@@ -13,9 +13,12 @@ describe("HeroCarousel component", () => {
 
   it("renders main titles and call-to-action buttons", () => {
     render(<HeroCarousel />);
-    expect(screen.getByText("Centro de investigación biológica")).toBeInTheDocument();
+    expect(screen.queryByText("Centro de investigación biológica")).not.toBeInTheDocument();
     expect(
-      screen.getByRole("heading", { name: "Laboratorio Científico de Biología Aplicada" })
+      screen.getByRole("heading", { name: "Laboratorio AEF" })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText("Somos un laboratorio en la PUCV dedicado al estudio de la biodiversidad de plantas y hongos")
     ).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Nuestro Proyecto" })).toHaveAttribute("href", "/proyecto");
     expect(screen.getByRole("link", { name: "Publicaciones" })).toHaveAttribute("href", "/publicaciones");
